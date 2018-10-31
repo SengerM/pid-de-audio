@@ -1,6 +1,7 @@
 import nicenquickplotlib as nq # https://github.com/SengerM/nicenquickplotlib
 import sounddevice as sd
 import numpy as np
+from utils import *
 
 import os
 os.system('clear')
@@ -8,7 +9,7 @@ os.system('clear')
 AMPLITUDE = 1 # Amplitude of the signal between 0 and 1.
 SIGNAL_FREQUENCY = 800 # In Hertz.
 N_CYCLES = 1000 # This must be "a great number" to overcome a strange transitory of the sound card...
-SAMPLING_FREQUENCY = 48000 # Must be integer.
+SAMPLING_FREQUENCY = 12000 # Must be integer.
 FREQUENCY_DELTA = SIGNAL_FREQUENCY
 # ----------------------------------------------------------------------
 samples = np.sin(2*np.pi*np.arange(SAMPLING_FREQUENCY/SIGNAL_FREQUENCY)*SIGNAL_FREQUENCY/SAMPLING_FREQUENCY)
@@ -35,7 +36,6 @@ nq.plot(
 	xlabel='Frecuency (Hz)',
 	title='FFT')
 # Calculate SNR --------------------------------------------------------
-SNR = recorded_FFT[samples_FFT.argmax()]/recorded_FFT[0:2000].mean()
-print(np.log(SNR)*20)
+print(np.log(calculate_SNR(recorded_samples[0]))*20)
 
 nq.show()
