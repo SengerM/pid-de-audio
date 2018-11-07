@@ -13,28 +13,29 @@ SAMPLING_FREQUENCY = 48000 # Must be integer.
 MIN_CHUNK_SIZE = 2**9 # Minimum chunk size.
 # ----------------------------------------------------------------------
 
-pure_samples = np.sin(2*np.pi*np.arange(SAMPLING_FREQUENCY/SIGNAL_FREQUENCY)*SIGNAL_FREQUENCY/SAMPLING_FREQUENCY)
-while len(pure_samples) < MIN_CHUNK_SIZE:
-	pure_samples = np.append(pure_samples, pure_samples)
-pure_samples = pure_samples.transpose()
+PURE_SAMPLES = np.sin(2*np.pi*np.arange(SAMPLING_FREQUENCY/SIGNAL_FREQUENCY)*SIGNAL_FREQUENCY/SAMPLING_FREQUENCY)
+while len(PURE_SAMPLES) < MIN_CHUNK_SIZE:
+	PURE_SAMPLES = np.append(PURE_SAMPLES, PURE_SAMPLES)
+PURE_SAMPLES = PURE_SAMPLES.transpose()
 
-def get_amplitud(error_signal):
+def get_amplitud():
 	amplitud = 0
-	yield amplitud
 	while True:
+		error_signal = yield amplitud
 		amplitud += error_signal
-		yield amplitud
 
-def callback(indata, outdata, frames, time, status):
-	error_signal = DESIRED_SNR - calculate_SNR(indata)
-	amplitud = get_amplitud(error_signal)
-	outdata[:] = amplitud/100*pure_samples.reshape(len(pure_samples),1)
-	
+def create_callback(): # Esto es una función que devuelve una funcion...
+	amplitudegen = get_amplitud() # "amplitudgen" es un objeto (o algo así) que queda instanciado en algún lugar mágico en el más allá.
+	def callback(indata, outdata, frames, time, status): # Prototipo del callback de sounddevice.
+		error_signal = DESIRED_SNR - calculate_SNR(indata)
+		amplitud = amplitudegen.send(error_signal)
+		outdata[:] = amplitud/100*PURE_SAMPLES.reshape(len(PURE_SAMPLES),1)
+	return callback
 
 stream = sd.Stream(
 	samplerate=SAMPLING_FREQUENCY, 
-	callback=callback, 
-	blocksize=len(pure_samples), 
+	callback=create_callback(), 
+	blocksize=len(PURE_SAMPLES), 
 	channels=1)
 
 stream.start()
