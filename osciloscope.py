@@ -36,6 +36,7 @@ nq.plot(
 	xlabel='Frecuency (Hz)',
 	title='FFT')
 # Calculate SNR --------------------------------------------------------
-print(np.log(calculate_SNR(recorded_samples[0]))*20)
+print('20*log(SNR) = ' + str(np.log(calculate_SNR(recorded_samples[0]))*20))
+print('SNR = ' + str(calculate_SNR(recorded_samples[0])))
 
 nq.show()
