@@ -7,9 +7,9 @@ import os
 os.system('clear')
 # Parameters -----------------------------------------------------------
 AMPLITUDE = 1 # Amplitude of the signal between 0 and 1.
-SIGNAL_FREQUENCY = 800 # In Hertz.
+SIGNAL_FREQUENCY = 1000 # In Hertz.
 N_CYCLES = 1000 # This must be "a great number" to overcome a strange transitory of the sound card...
-SAMPLING_FREQUENCY = 12000 # Must be integer.
+SAMPLING_FREQUENCY = 48000 # Must be integer.
 FREQUENCY_DELTA = SIGNAL_FREQUENCY
 # ----------------------------------------------------------------------
 samples = np.sin(2*np.pi*np.arange(SAMPLING_FREQUENCY/SIGNAL_FREQUENCY)*SIGNAL_FREQUENCY/SAMPLING_FREQUENCY)

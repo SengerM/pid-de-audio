@@ -7,10 +7,10 @@ from utils import *
 from pid import *
 
 # Parameters -----------------------------------------------------------
-DESIRED_SNR = 50 # Not dB!
-MAX_SNR = 100
+DESIRED_SNR = 200 # Not dB!
+MAX_SNR = 2400
 MIN_SNR = 0
-SIGNAL_FREQUENCY = 1000 # In Hertz.
+SIGNAL_FREQUENCY = 800 # In Hertz.
 SAMPLING_FREQUENCY = 48000 # Must be integer.
 MIN_CHUNK_SIZE = 2**10 # Minimum chunk size.
 # ----------------------------------------------------------------------
@@ -21,7 +21,7 @@ while len(PURE_SAMPLES) < MIN_CHUNK_SIZE:
 PURE_SAMPLES = PURE_SAMPLES.transpose()
 
 def create_callback(): # Esto es una función que devuelve una funcion... Es la "función constructora".
-	pid = PID(kP=0.3, kI=0.03, kD=0.1) # El objeto "pid" es instanciado y luego queda viviendo en un lugar mágico del más allá.
+	pid = PID(kP=1, kI=0.3, kD=0.1) # El objeto "pid" es instanciado y luego queda viviendo en un lugar mágico del más allá.
 	pid.set_point = mapp(DESIRED_SNR, MIN_SNR, MAX_SNR, -1, 1)
 	pid.print_config()
 	def callback(indata, outdata, frames, time, status): # Prototipo del callback de sounddevice.
