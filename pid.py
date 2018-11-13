@@ -43,7 +43,5 @@ class PID:
 			self.control = -1
 		if self.control > 1:
 			self.control = 1
-		# ~ print('e={:.2f}   '.format(error) + 'c={:.3f}   '.format(self.control))
-		# ~ print('I='+str(self.error_integral))
 		self.last_error = error
 		return self.control
