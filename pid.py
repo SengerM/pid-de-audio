@@ -23,8 +23,8 @@ class PID:
 		self.__set_point = sp
 		
 	def print_config(self):
-		print('kP=' + str(self.kP) + '    kI=' + str(self.kI) + '    kD=' + str(self.kD))
-		print('set_point=' + str(self.__set_point))
+		print('# ' + 'kP=' + str(self.kP) + '    kI=' + str(self.kI) + '    kD=' + str(self.kD))
+		print('# ' + 'set_point=' + str(self.__set_point))
 		
 	def get_control(self, sensor):
 		now = time.time()
